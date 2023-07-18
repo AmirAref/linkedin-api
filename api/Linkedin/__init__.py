@@ -55,7 +55,7 @@ class LinkedinPost():
             # extract
             self.document = Document()
             self.document.title = _document['doc']['title']
-            self.document.images_list = [item['config']['src'] for item in _document['doc']['coverPages'][:document_pages_limit]]
+            self.document.document = requests.get(_document['doc']['url']).json()['transcribedDocumentUrl']
             
         
         # get the video links
@@ -70,4 +70,4 @@ class LinkedinPost():
 class Document:
     def __init__(self) -> None:
         self.title : str = None
-        self.images_list : list[str] = []
+        self.document : str = None

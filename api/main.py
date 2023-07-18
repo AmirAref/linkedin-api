@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Form, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Annotated
 from .Linkedin import LinkedinPost
 
 app = FastAPI()
+
+# config static files and templates
 templates = Jinja2Templates('templates')
 
 @app.get('/', response_class=HTMLResponse)
@@ -17,7 +20,7 @@ async def root(request : Request):
 
 
 @app.post('/')
-async def login(url: Annotated[str, Form()]):
+async def api(url: Annotated[str, Form()]):
     # get data from linkedin
     post = LinkedinPost(url)
     try:
@@ -26,4 +29,4 @@ async def login(url: Annotated[str, Form()]):
         data = post.to_dict()
         return data
     except Exception as e:
-        return {'status':False, 'message': e}
+        return {'status':False, 'message': str(e)}
