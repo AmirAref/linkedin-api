@@ -13,4 +13,4 @@ RUN pip install pipenv && pipenv install --system
 COPY . /code/
 
 # commands
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--forwarded-allow-ips", "*"]
