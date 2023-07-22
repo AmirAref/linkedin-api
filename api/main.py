@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Annotated
-from .Linkedin import LinkedinPost
+from .Linkedin import LinkedinPost, errors
 
 app = FastAPI()
 
@@ -44,7 +44,12 @@ async def api(request : Request, url: Annotated[str, Form()]):
                    'images':post.images, 'videos':post.videos,
                    'document':post.document,
                    }
+    except (errors.PageNotFound, errors.PostNotFound) as e:
+        error_message = "Post not found maybe the URL is uncorrect or the post is private for a specific group."
+        context = {'request':request, 'status':False, 'message': error_message}
     except Exception as e:
-        context = {'request':request, 'status':False, 'message': str(e)}
+        # error_message = str(e)
+        error_message = "undefined error from api"
+        context = {'request':request, 'status':False, 'message': error_message}
     # response 
     return templates.TemplateResponse('post-details.html', context=context)
