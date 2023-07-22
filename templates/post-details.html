@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+    
+{% block title %}Linkedin api - post details{% endblock title %}
+
+{% block main %}
+    <!-- section-->
+
+    <section class="page-section" >
+            
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-lg-8 col-xl-6 text-center">
+                    <a href="/"><h2 class="mt-0"><i class="fa fa-arrow-left"></i> Back to Home</h2></a>
+                </div>
+            </div>
+            
+    {% if status == True %}
+        <div class="card-columns justify-content-center row mx-3">
+        <!-- images -->
+        {% if images %}
+            <div class="card col-sm-3 m-3">
+                <div class="card-body">
+                    <h3 class="card-title">Images</h3>
+                    <ul class="list-group list-group-flush">
+                        {% for img in  images %}
+                            <li class="list-group-item">
+                                <a href="{{img}}" class="btn btn-primary" download target="_blank"><i class="fa fa-file-picture-o"></i> Download Image</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- videos -->
+        {% if videos %}
+            <div class="card col-sm-3 m-3">
+                <div class="card-body">
+                    <h3 class="card-title">videos</h3>
+                    <ul class="list-group list-group-flush">
+                        {% for video in  videos %}
+                            <li class="list-group-item">
+                                <a href="{{video.src}}" class="btn btn-primary" download="{{video.src}}" target="_blank"><i class="fa fa-file-video-o"></i> Download video</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- document -->
+        {% if document %}
+        <div class="card col-sm-3 m-3">
+            <div class="card-body">
+                <h3 class="card-title">Document</h3>
+                <a href="{{document.document}}" class="btn btn-primary" download target="_blank"><i class="fa fa-file-pdf-o"></i> {{document.title}}.pdf</a>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+    <!-- Not Found -->
+    {% else %}
+        <div class="container text-center col-md-10 mt-5">
+            <h2 class="">Not Found Error !</h2>
+            <div class="mt-5 alert alert-danger">
+                {{message}}
+            </div>
+        </div>
+    {% endif %}
+        </div>
+    </section>
+
+{% endblock main %}

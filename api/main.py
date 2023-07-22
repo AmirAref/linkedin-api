@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, Body
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -8,6 +8,7 @@ from .Linkedin import LinkedinPost
 app = FastAPI()
 
 # config static files and templates
+app.mount("/static", StaticFiles(directory='static'), name="static")
 templates = Jinja2Templates('templates')
 
 @app.get('/', response_class=HTMLResponse)
@@ -18,9 +19,9 @@ async def root(request : Request):
         context={'request':request}
         )
 
-
-@app.post('/')
-async def api(url: Annotated[str, Form()]):
+# api for developers
+@app.post('/api/')
+async def api(url: str = Body(..., embed=True)):
     # get data from linkedin
     post = LinkedinPost(url)
     try:
@@ -30,3 +31,20 @@ async def api(url: Annotated[str, Form()]):
         return data
     except Exception as e:
         return {'status':False, 'message': str(e)}
+    
+# display data humanize for users
+@app.post('/', response_class=HTMLResponse)
+async def api(request : Request, url: Annotated[str, Form()]):
+    # get data from linkedin
+    post = LinkedinPost(url)
+    try:
+        # return data
+        post.get_post_data()
+        context = {'request':request, 'status':True,
+                   'images':post.images, 'videos':post.videos,
+                   'document':post.document,
+                   }
+    except Exception as e:
+        context = {'request':request, 'status':False, 'message': str(e)}
+    # response 
+    return templates.TemplateResponse('post-details.html', context=context)
