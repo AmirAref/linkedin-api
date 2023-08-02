@@ -35,11 +35,12 @@
         {% if videos %}
             <div class="card col-sm-3 m-3">
                 <div class="card-body">
-                    <h3 class="card-title">videos</h3>
+                    <h3 class="card-title">Video (Diiferent Qualities)</h3>
                     <ul class="list-group list-group-flush">
                         {% for video in  videos %}
                             <li class="list-group-item">
                                 <a href="{{video.src}}" class="btn btn-primary" download="{{video.src}}" target="_blank"><i class="fa fa-file-video-o"></i> Download video</a>
+                                <span>Bitrate : <b>{{ humanize_size(video['data-bitrate']) }}</b></span>
                             </li>
                         {% endfor %}
                     </ul>
@@ -52,7 +53,7 @@
         <div class="card col-sm-3 m-3">
             <div class="card-body">
                 <h3 class="card-title">Document</h3>
-                <a href="{{document.document}}" class="btn btn-primary" download target="_blank"><i class="fa fa-file-pdf-o"></i> {{document.title}}.pdf</a>
+                <a href="{{document.url}}" class="btn btn-primary" download target="_blank"><i class="fa fa-file-pdf-o"></i> {{document.title}}.pdf</a>
             </div>
         </div>
         {% endif %}

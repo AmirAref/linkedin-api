@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Annotated
+from humanize import naturalsize
 from .Linkedin import LinkedinPost, errors
 
 app = FastAPI(
@@ -16,6 +17,9 @@ app = FastAPI(
 # config static files and templates
 app.mount("/static", StaticFiles(directory='static'), name="static")
 templates = Jinja2Templates('templates')
+
+# config the jinja2
+templates.env.globals.update(humanize_size=naturalsize)
 
 @app.get('/', response_class=HTMLResponse, include_in_schema=False)
 async def root(request : Request):
