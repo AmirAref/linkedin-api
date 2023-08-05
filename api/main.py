@@ -12,6 +12,7 @@ app = FastAPI(
     version="0.1.0",
     docs_url="/documentation",
     redoc_url=None,
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 )
 
 # config static files and templates
