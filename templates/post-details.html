@@ -40,7 +40,7 @@
                         {% for video in  videos %}
                             <li class="list-group-item">
                                 <a href="{{video.url}}" class="btn btn-primary" download="{{video.src}}" target="_blank"><i class="fa fa-file-video-o"></i> Download video</a>
-                                <span>Bitrate : <b>{{ humanize_size(video.bitrate) }}</b></span>
+                                <span>Bitrate : <b>{{ humanize_size(video.bitrate) }}/s</b></span>
                             </li>
                         {% endfor %}
                     </ul>
