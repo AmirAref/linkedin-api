@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Annotated
 from humanize import naturalsize
-from .Linkedin import LinkedinPost, errors
+from .Linkedin import get_post_data, errors, Post
 
 app = FastAPI(
     title="Linekdin API",
@@ -31,33 +31,30 @@ async def root(request : Request):
 
 # api for developers
 @app.post('/api/')
-async def api(url: str = Body(..., embed=True)) -> dict:
+async def api(url: str = Body(..., embed=True)) -> Post:
     # check url is not empty
     if not url:
         raise HTTPException(422, "url is required.")
     # get data from linkedin
-    post = LinkedinPost(url)
     try:
         # return data
-        post.get_post_data()
-        data = post.to_dict()
-        return data
+        post = get_post_data(url)
+        return post
     except (errors.PageNotFound, errors.PostNotFound) as e:
         error_message = "Post not found maybe the URL is uncorrect or the post is private for a specific group."
-        raise HTTPException(422, error_message)
+        raise HTTPException(status_code=422, detail=error_message)
     except Exception as e:
         # error_message = str(e)
         error_message = "undefined error."
-        raise HTTPException(422, error_message)
+        raise HTTPException(status_code=422, detail=error_message)
     
 # display data humanize for users
 @app.post('/', response_class=HTMLResponse, include_in_schema=False)
 async def form_api(request : Request, url: Annotated[str, Form()]):
     # get data from linkedin
-    post = LinkedinPost(url)
     try:
         # return data
-        post.get_post_data()
+        post = get_post_data(url)
         context = {'request':request, 'status':True,
                    'images':post.images, 'videos':post.videos,
                    'document':post.document,
