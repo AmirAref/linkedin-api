@@ -56,6 +56,7 @@ def get_post_data(url : str):
     if _json_data:
         _json_data = json.loads(_json_data['data-sources'])
         post.videos = [Video(url=item['src'], bitrate=item['data-bitrate']) for item in _json_data]
+        post.videos.sort(key=lambda x:x.bitrate, reverse=True)
 
     return post
 
