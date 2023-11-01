@@ -34,5 +34,5 @@ RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; els
 COPY . ./
 
 # commands
-RUN alembic upgrade head
+# RUN alembic upgrade head
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--forwarded-allow-ips", "*"]
