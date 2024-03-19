@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from humanize import naturalsize
 
 from src.utils import handle_get_post_data
-from src.linkedin import errors
+from src import errors
 
 
 router = APIRouter(include_in_schema=False)

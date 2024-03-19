@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request, Body, HTTPException
 
 from src.utils import handle_get_post_data
-from src.linkedin import Post
-from src.linkedin import errors
+from src.linkedin.schemas import Post
+from src import errors
 
 
 router = APIRouter()
