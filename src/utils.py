@@ -1,5 +1,5 @@
 from fastapi import Request
-from src.linkedin import get_post_data
+from src.linkedin.crawler import get_post_data
 from src.db.crud import create_download, read_download
 
 
