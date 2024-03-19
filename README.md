@@ -37,5 +37,5 @@ pip install pipenv && pipenv install
 # go to pipenv shell
 pipenv shell
 # run the app using uvicorn webserver
-uvicorn api.main:app --host 0.0.0.0
+uvicorn src.main:app --host 0.0.0.0
 ```

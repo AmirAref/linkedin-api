@@ -1,9 +1,9 @@
 from fastapi import Request
-from api.Linkedin import get_post_data
-from api.db.crud import create_download, read_download
+from src.linkedin import get_post_data
+from src.db.crud import create_download, read_download
 
 
-async def handle_get_post_data(url: str, request: Request):
+async def handle_get_post_data(url: str, request: Request) -> object:
     # check cache for data
     download_cache = await read_download(url=url)
     if download_cache:
