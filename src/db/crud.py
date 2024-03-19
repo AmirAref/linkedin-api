@@ -1,12 +1,12 @@
-from api.db.models import DownloadRequest
-from api.db.database import Session
+from src.db.models import DownloadRequest
+from src.db.database import Session
 
 session = Session()
 
 
 async def create_download(
     url: str,
-    data: list,
+    data: object,
     ip_address: str,
 ):
     # create new row for download

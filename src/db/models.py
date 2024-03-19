@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, JSON, TIMESTAMP, func
-from api.db.database import Base
+from src.db.database import Base
 
 
 class DownloadRequest(Base):
