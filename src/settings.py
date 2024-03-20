@@ -1,3 +1,4 @@
+from typing import Literal
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +15,8 @@ class DatabaseSettings(BaseSettings):
 
 class Settings(BaseSettings):
     database: DatabaseSettings = DatabaseSettings()
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] | None = None
+    logging_format: str = "{asctime} [{levelname}] - {name} : {message}"
 
     model_config = SettingsConfigDict(extra="allow")
 

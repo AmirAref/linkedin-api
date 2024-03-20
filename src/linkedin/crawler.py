@@ -4,21 +4,29 @@ import json
 
 from src.errors import PageNotFound, PostNotFound
 from src.linkedin.schemas import Post, Document, Video
+from src.utils.logger import get_logger
+
+logger = get_logger("crawler")
 
 
 # functions
 def get_post_data(url: str):
     # send request
+    logger.debug(f"send request to url {url}")
     response = requests.get(url)
     # check status
     if response.status_code in range(400, 500):
+
+        logger.info(f"response is not valid, status code is between 400 and 500")
         raise PageNotFound("Page not found error !")
     # parse the response
+    logger.debug("parsing page content")
     soup = BeautifulSoup(response.content, "html.parser")
 
     # check the post section is exists
     post_section = soup.find("article")
     if not post_section:
+        logger.info('"article" tag not found!')
         raise PostNotFound("post not exists !")
 
     # post text
@@ -28,6 +36,7 @@ def get_post_data(url: str):
     ).text
 
     # get post details
+    logger.debug("get post details, reactions and comments count")
     post_detail = post_section.find(
         "div", class_="main-feed-activity-card__social-actions"
     )
@@ -39,11 +48,13 @@ def get_post_data(url: str):
         post.comments = int(_reactions["data-num-comments"]) if _reactions else 0
 
     # extract the post images
+    logger.debug("get post images")
     _image_list = post_section.find("ul", attrs={"class": "feed-images-content"})
     if _image_list:
         post.images = [item["data-delayed-url"] for item in _image_list.find_all("img")]
 
     # extract the document
+    logger.debug("get post document")
     _document = post_section.find(
         "iframe", attrs={"data-id": "feed-paginated-document-content"}
     )
@@ -58,6 +69,7 @@ def get_post_data(url: str):
         post.document = Document(url=_doc_url, title=_doc_title)
 
     # get the video links
+    logger.debug("get post videos")
     _json_data = post_section.find("video")
     if _json_data:
         _json_data = json.loads(_json_data["data-sources"])

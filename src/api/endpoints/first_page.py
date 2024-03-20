@@ -5,12 +5,13 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from humanize import naturalsize
 
-from src.utils import handle_get_post_data
+from src.utils.logger import get_logger
+from src.utils.utils import handle_get_post_data
 from src import errors
 
 
 router = APIRouter(include_in_schema=False)
-
+logger = get_logger("first_page")
 
 templates = Jinja2Templates("src/templates")
 
@@ -42,8 +43,7 @@ async def form_api(request: Request, url: Annotated[str, Form()]):
         error_message = "Post not found maybe the URL is uncorrect or the post is private for a specific group."
         context = {"request": request, "status": False, "message": error_message}
     except Exception as e:
-        # error_message = str(e)
-        print(e)
+        logger.exception(msg="get post data raised an error!")
         error_message = "undefined error from api"
         context = {"request": request, "status": False, "message": error_message}
     # response

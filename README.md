@@ -5,7 +5,7 @@ a web API service to get this is a tool to download the videos, pictures, docume
 <br>
 
 ## Documentation
-the API documentations are <a href="https://linkedin.iran.liara.run/documentation" target="_blank">here</a>.  
+the API documentations are <a href="https://linkedin.iran.liara.run/docs" target="_blank">here</a>.  
   
 <br>
 

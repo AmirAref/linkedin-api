@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Request, Body, HTTPException
 
-from src.utils import handle_get_post_data
+from src.utils.logger import get_logger
+from src.utils.utils import handle_get_post_data
 from src.linkedin.schemas import Post
 from src import errors
 
 
 router = APIRouter()
+logger = get_logger("api")
 
 
 # api for developers
@@ -13,7 +15,7 @@ router = APIRouter()
 async def api(request: Request, url: str = Body(..., embed=True)) -> Post:
     # check url is not empty
     if not url:
-        raise HTTPException(422, "url is required.")
+        raise HTTPException(status_code=422, detail="url is required.")
     # get data from linkedin
     try:
         # return data
@@ -23,6 +25,6 @@ async def api(request: Request, url: str = Body(..., embed=True)) -> Post:
         error_message = "Post not found maybe the URL is uncorrect or the post is private for a specific group."
         raise HTTPException(status_code=422, detail=error_message)
     except Exception:
-        # error_message = str(e)
+        logger.exception(msg="get post data raised an error!")
         error_message = "undefined error."
         raise HTTPException(status_code=422, detail=error_message)
