@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] | None = None
     logging_format: str = "{asctime} [{levelname}] - {name} : {message}"
 
-    model_config = SettingsConfigDict(extra="allow")
+    model_config = SettingsConfigDict(extra="allow", case_sensitive=False)
 
 
 settings = Settings()
