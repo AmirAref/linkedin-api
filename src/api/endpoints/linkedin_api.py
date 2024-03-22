@@ -21,7 +21,7 @@ async def api(request: Request, url: str = Body(..., embed=True)) -> Post:
         # return data
         post = await handle_get_post_data(url=url, request=request)
         return post
-    except (errors.PageNotFound, errors.PostNotFound) as e:
+    except (errors.PageNotFound, errors.PostNotFound):
         error_message = "Post not found maybe the URL is uncorrect or the post is private for a specific group."
         raise HTTPException(status_code=422, detail=error_message)
     except Exception:

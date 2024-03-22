@@ -1,9 +1,10 @@
-from bs4 import BeautifulSoup
-import requests
 import json
 
+import requests
+from bs4 import BeautifulSoup
+
 from src.errors import PageNotFound, PostNotFound
-from src.linkedin.schemas import Post, Document, Video
+from src.linkedin.schemas import Document, Post, Video
 from src.utils.logger import get_logger
 
 logger = get_logger("crawler")
@@ -16,8 +17,7 @@ def get_post_data(url: str):
     response = requests.get(url)
     # check status
     if response.status_code in range(400, 500):
-
-        logger.info(f"response is not valid, status code is between 400 and 500")
+        logger.info("response is not valid, status code is between 400 and 500")
         raise PageNotFound("Page not found error !")
     # parse the response
     logger.debug("parsing page content")

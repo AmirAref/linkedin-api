@@ -27,7 +27,7 @@ def get_logger(
     """
 
     # create logger
-    _logger_name = f"LinkedinAPI"
+    _logger_name = "LinkedinAPI"
     if name:
         _logger_name += f".{name}"
 

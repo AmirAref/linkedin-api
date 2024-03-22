@@ -39,10 +39,10 @@ async def form_api(request: Request, url: Annotated[str, Form()]):
             "videos": post["videos"],
             "document": post["document"],
         }
-    except (errors.PageNotFound, errors.PostNotFound) as e:
+    except (errors.PageNotFound, errors.PostNotFound):
         error_message = "Post not found maybe the URL is uncorrect or the post is private for a specific group."
         context = {"request": request, "status": False, "message": error_message}
-    except Exception as e:
+    except Exception:
         logger.exception(msg="get post data raised an error!")
         error_message = "undefined error from api"
         context = {"request": request, "status": False, "message": error_message}
